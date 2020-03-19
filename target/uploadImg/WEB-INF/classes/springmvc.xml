@@ -4,11 +4,39 @@
        xmlns:contex="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
-
-    <contex:component-scan base-package="com.zx.controller"/>
-    <mvc:annotation-driven/>
+    <!-- 开启组件扫描  -->
+    <!-- 开启springmvc的组件扫描   处理器 -->
+    <contex:component-scan base-package="com.zx" />
+    <!-- 开启springmvc 注解 -->
+    <mvc:annotation-driven  />
+    <!--    <mvc:annotation-driven >
+            <mvc:message-converters register-defaults="true">
+                &lt;!&ndash; 缺陷 StringHttpMessageConverter 类中的数据格式 固定为 文本字符串 如果需要json 前端还需要将数据进行一次转化 &ndash;&gt;
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                    &lt;!&ndash; 指定了默认的数据转换器的编码 &ndash;&gt;
+                    <constructor-arg name="defaultCharset" value="UTF-8" />
+                </bean>
+            </mvc:message-converters>
+        </mvc:annotation-driven>-->
+    <!-- 配置视图解析器 -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/"/>
+        <!-- 配置前缀 -->
+        <property name="prefix" value="/" />
     </bean>
-
+    <!-- 文件上传解析器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 编码格式 --> <!-- 因为本身 上传的文件是二进制 字节 设置编码主要文本 -->
+        <property name="defaultEncoding"  value="UTF-8" />
+        <!--
+             上传文件的最大字节  当超过这个字节时  就会出现异常
+             出了异常后  要么进行异常处理  要么程序后续逻辑将不再执行，如果不处理这样做程序体验较差。
+             所以，异常一定要处理。程序既然内部能够检查出文件的大小，大了就抛异常，那么为什么程序员不自己进行文件的大小检查呢？
+             所以 开发者可以自己对文件进行处理。
+        -->
+        <!--   <property name="maxUploadSize" value="2000"  />-->
+    </bean>
+    <!--  配置springmvc 处理 静态资源 -->
+    <!--<mvc:default-servlet-handler />-->
+    <!--  mapping  请求的路径   location 关联的资源目录  -->
+    <mvc:resources mapping="/resources/**" location="/resources/" ></mvc:resources>
 </beans>

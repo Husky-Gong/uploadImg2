@@ -67,10 +67,10 @@
             page:true,
             cols:[[
                 {type:'checkbox'},
-                {field:'id',title:'ID',width:'185'},
+                {field:'id',title:'ID',width:'40'},
                 {field:'name',title:'NAME',width:'150'},
-                {field:'size',title:'SIZE',width:'150'},
-                {field:'url',title:'CHECK',width:'100',templet:function(d){
+                {field:'size',title:'SIZE',width:'100'},
+                {field:'url',title:'CHECK',width:'95',templet:function(d){
                     return "<button onclick=showImg('\"+d.url\"') class='layui-btn layui-btn-sm'>CHECK</button>";
                     }},
             ]],
@@ -88,7 +88,57 @@
                 }
             }
         });
-    })
+
+        $("#searchBtn").click(function () {
+            var name = $("#name").val();
+            t.reload({
+                where:{
+                    name:name,
+                    page:1
+                }
+            });
+        });
+
+        //上传功能
+        $("#upload").click(function () {
+            layer.open(
+                {
+                    type:1,//html
+                    content:$("#uploadTpl").html(),
+                    area:['400px','400px'],
+                    success:function(layero,index){
+                        //弹出层成功时 方法
+                        //初始化上传组件
+                        upload.render({
+                            elem: '#image', //绑定元素
+                            url: 'images/upload.do',//上传接口
+                            auto:false,
+                            field:"image",//文件name值
+                            bindAction:"#uploadBtn",
+                            choose: function(obj){
+                                obj.preview(function(index, file, result){
+                                    $("#image").attr("src",result);
+                                });
+                            }
+                            ,done: function(rs){
+                                if(rs.code != 200){
+                                    layer.msg(rs.msg);
+                                    return false;
+                                }
+                                //关闭弹出层
+                                layer.close(index);
+                                //刷新表格
+                                $("#searchBtn").click();
+
+                            }
+                        });
+
+                    }
+                }
+            );
+        });
+    });
 </script>
+
 </body>
 </html>

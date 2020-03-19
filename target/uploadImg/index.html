@@ -33,11 +33,112 @@
 </div>
 </script>
 
-<form action="file/upload.do" method="post" enctype="multipart/form-data">
-    <p>USERNAME:<input name="userName"/></p>
-    <p>PASSWORD:<input name="password"/></p>
-    <p>IMAGE:<input name="img" type="file"/></p>
-    <input type="submit" value="SUBMIT"/>
-</form>
+<script type="text/html" id="rowBtns">
+<button class="layui-btn layui-btn-sm" lay-event="download">
+    <i class="layui-icon layui-icon-edit"></i>DOWNLOAD
+</button>
+<button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="delete">
+    <i class="layui-icon layui-icon-chat"></i>DELETE
+</button>
+</script>
+
+<script src="resources/layui/layui.js"></script>
+
+<script>
+    var layer = null;
+    function showImg(url) {
+        layer.open({
+            type:2,
+            content:url
+        });
+    }
+
+    layui.use(['form','jquery','table','layer','upload'],function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var table = layui.table;
+        layer = layui.layer;
+        var upload = layui.upload;
+
+        var t = table.render({
+            elem:"#dataTable",
+            url:"file/page.do",
+            width:730,
+            page:true,
+            cols:[[
+                {type:'checkbox'},
+                {field:'id',title:'ID',width:'40'},
+                {field:'name',title:'NAME',width:'150'},
+                {field:'size',title:'SIZE',width:'100'},
+                {field:'url',title:'CHECK',width:'95',templet:function(d){
+                    return "<button onclick=showImg('\"+d.url\"') class='layui-btn layui-btn-sm'>CHECK</button>";
+                    }},
+            ]],
+            response:{
+                "statusCode":200
+            },
+            parseData:function (rs) {
+                if(rs.code == 200){
+                    return{
+                        "code":rs.code,
+                        "msg":rs.mas,
+                        "count":rs.data.count,
+                        "data":rs.data.data
+                    }
+                }
+            }
+        });
+
+        $("#searchBtn").click(function () {
+            var name = $("#name").val();
+            t.reload({
+                where:{
+                    name:name,
+                    page:1
+                }
+            });
+        });
+
+        //上传功能
+        $("#upload").click(function () {
+            layer.open(
+                {
+                    type:1,//html
+                    content:$("#uploadTpl").html(),
+                    area:['400px','400px'],
+                    success:function(layero,index){
+                        //弹出层成功时 方法
+                        //初始化上传组件
+                        upload.render({
+                            elem: '#image', //绑定元素
+                            url: 'images/upload.do',//上传接口
+                            auto:false,
+                            field:"image",//文件name值
+                            bindAction:"#uploadBtn",
+                            choose: function(obj){
+                                obj.preview(function(index, file, result){
+                                    $("#image").attr("src",result);
+                                });
+                            }
+                            ,done: function(rs){
+                                if(rs.code != 200){
+                                    layer.msg(rs.msg);
+                                    return false;
+                                }
+                                //关闭弹出层
+                                layer.close(index);
+                                //刷新表格
+                                $("#searchBtn").click();
+
+                            }
+                        });
+
+                    }
+                }
+            );
+        });
+    });
+</script>
+
 </body>
 </html>
