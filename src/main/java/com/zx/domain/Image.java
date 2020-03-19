@@ -17,11 +17,6 @@ public class Image {
     private String size;
 
     /**
-    * file url path
-    */
-    private String url;
-
-    /**
     * file physical path
     */
     private String path;
@@ -50,30 +45,11 @@ public class Image {
         this.size = size;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public String getPath() {
         return path;
     }
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    @Override
-    public String toString() {
-        return "Image{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", size='" + size + '\'' +
-                ", url='" + url + '\'' +
-                ", path='" + path + '\'' +
-                '}';
     }
 }

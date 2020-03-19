@@ -34,7 +34,7 @@
                   <option name="moduleName" value="uploadImg" />
                   <option name="sequenceColumn" value="" />
                   <option name="sequenceId" value="" />
-                  <option name="useActualColumnName" value="false" />
+                  <option name="useActualColumnName" value="true" />
                 </TableGenerateConfig>
               </value>
             </entry>
@@ -52,6 +52,7 @@
             </entry>
           </map>
         </option>
+        <option name="useActualColumnNames" value="true" />
         <option name="xmlMapperPackage" value="mapper" />
         <option name="xmlMapperPath" value="$PROJECT_DIR$/src/main/resources" />
       </ProjectProfile>

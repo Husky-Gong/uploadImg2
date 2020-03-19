@@ -1,6 +1,7 @@
 package com.zx.mapper;
 
 import com.zx.domain.Image;
+import com.zx.form.imageForm;
 import com.zx.query.ImageQuery;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 public interface ImageMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Image record);
+    int insert(imageForm record);
 
     int insertSelective(Image record);
 

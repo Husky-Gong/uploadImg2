@@ -7,12 +7,11 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="size" jdbcType="VARCHAR" property="size" />
-    <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="path" jdbcType="VARCHAR" property="path" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, `name`, `size`, url, `path`
+    id, `name`, `size`, `path`
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--@mbg.generated-->
@@ -28,10 +27,10 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.zx.domain.Image" useGeneratedKeys="true">
     <!--@mbg.generated-->
-    insert into image (`name`, `size`, url, 
-      `path`)
-    values (#{name,jdbcType=VARCHAR}, #{size,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
-      #{path,jdbcType=VARCHAR})
+    insert into image (`name`, `size`, `path`
+      )
+    values (#{name,jdbcType=VARCHAR}, #{size,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.zx.domain.Image" useGeneratedKeys="true">
     <!--@mbg.generated-->
@@ -43,9 +42,6 @@
       <if test="size != null">
         `size`,
       </if>
-      <if test="url != null">
-        url,
-      </if>
       <if test="path != null">
         `path`,
       </if>
@@ -56,9 +52,6 @@
       </if>
       <if test="size != null">
         #{size,jdbcType=VARCHAR},
-      </if>
-      <if test="url != null">
-        #{url,jdbcType=VARCHAR},
       </if>
       <if test="path != null">
         #{path,jdbcType=VARCHAR},
@@ -75,9 +68,6 @@
       <if test="size != null">
         `size` = #{size,jdbcType=VARCHAR},
       </if>
-      <if test="url != null">
-        url = #{url,jdbcType=VARCHAR},
-      </if>
       <if test="path != null">
         `path` = #{path,jdbcType=VARCHAR},
       </if>
@@ -89,22 +79,19 @@
     update image
     set `name` = #{name,jdbcType=VARCHAR},
       `size` = #{size,jdbcType=VARCHAR},
-      url = #{url,jdbcType=VARCHAR},
       `path` = #{path,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-
-
-    <select id="selectList" resultMap="BaseResultMap">
-      <!--@mbg.generated-->
-      select
-      <include refid="Base_Column_List" />
-      from image
-      <where>
-        <if test="name !=null and name !=''">
-          and name like concat('%', #{name}, '%')
-        </if>
-      </where>
-    </select>
+  <select id="selectList" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from image
+    <where>
+      <if test="name !=null and name !=''">
+        and name like concat('%', #{name}, '%')
+      </if>
+    </where>
+  </select>
 </mapper>
