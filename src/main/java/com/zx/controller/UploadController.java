@@ -30,16 +30,11 @@ public class UploadController {
         if(! new File(realPathUploads).exists()){
             new File(realPathUploads).mkdir();
         }
-
         String orgName = img.getOriginalFilename();
         String filePath = realPathUploads+orgName;
-
         System.out.println(filePath);
-
         File dest = new File(filePath);
-
         img.transferTo(dest);
-
         return "/index.html";
     }
 }
